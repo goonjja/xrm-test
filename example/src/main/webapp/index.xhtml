@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF8" />
+	<title>Приложение ОАО «Вешалки и Веснушки»</title>
+	<link rel="stylesheet" type="text/css"
+		href="#{request.contextPath}/res/bootstrap.min.css"></link>
+	<link rel="stylesheet" type="text/css"
+		href="#{request.contextPath}/res/bootstrap-responsive.min.css"></link>
+</h:head>
+<h:body>
+	<div class='navbar navbar-fixed-top'>
+		<div class="navbar-inner">
+			<div class="container">
+				<a class="brand" href="#{request.contextPath}">Приложение ОАО
+					«Вешалки и Веснушки»</a>
+				<button type="button" class="btn btn-navbar collapsed"
+					data-toggle="collapse" data-target=".nav-collapse">
+					<span class="icon-bar"></span> <span class="icon-bar"></span> <span
+						class="icon-bar"></span>
+				</button>
+
+			</div>
+		</div>
+	</div>
+	<div style='height: 0; margin-top: 60px;' />
+
+	<div class='container'>
+		<div class='span6 offset3'>
+			<div class='row'>
+				<a class='btn btn-success' data-toggle="modal"
+					data-target="#create-task-popup">Новая задача</a>
+			</div>
+
+			<div class='row'>
+				<h:form id='tasksForm'>
+					<table class='table table-striped table-bordered'>
+						<thead>
+							<tr>
+								<th style='width: 30px'>#</th>
+								<th>Задача</th>
+								<th style='width: 30px'>&#10003;</th>
+								<th style='width: 30px'>&times;</th>
+							</tr>
+						</thead>
+						<ui:repeat value="#{dataBean.tasks}" var="task" varStatus="i">
+							<tr>
+								<td>#{i.index + 1}</td>
+								<td>
+									<p>#{task.name}</p>
+								</td>
+								<td><h:selectBooleanCheckbox id="task_#{i.index}"
+										value='#{task.completed}' disabled="#{task.completed}"
+										action='#{dataBean.setTaskCompleted}'>
+										<f:ajax event="click" execute="@form" render="@form" />
+									</h:selectBooleanCheckbox></td>
+								<td><h:commandLink class='btn btn-small btn-danger'
+										action='#{dataBean.deleteTask(i.index)}'>&times;</h:commandLink></td>
+							</tr>
+						</ui:repeat>
+					</table>
+				</h:form>
+			</div>
+		</div>
+	</div>
+
+	<!-- Create task popup -->
+	<div id='create-task-popup' class="modal hide fade">
+		<h:form id='createTaskForm'>
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-hidden="true">&times;</button>
+				<h3>Создать задачу</h3>
+			</div>
+			<div class="modal-body">
+				<h:inputText id='newTaskName' label="Задача"
+					value="#{createTaskBean.name}" />
+			</div>
+			<div class="modal-footer">
+				<h:commandLink action="#{createTaskBean.createTask}"
+					class="btn btn-primary" value="Сохранить" />
+			</div>
+		</h:form>
+	</div>
+	<script
+		src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+	<script src="#{request.contextPath}/res/bootstrap.min.js"></script>
+</h:body>
+</html>
