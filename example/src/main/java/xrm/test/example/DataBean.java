@@ -8,6 +8,9 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.event.ValueChangeEvent;
 
+import xrm.test.versions.annotation.Version;
+
+@Version(author = "pupkin", date = "13.05.2013", comment = "New version!")
 @ManagedBean(name = "dataBean")
 @SessionScoped
 public class DataBean implements Serializable {

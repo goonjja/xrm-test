@@ -1,0 +1,52 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui"
+	xmlns:dp="urn:import:com.google.gwt.user.datepicker.client"
+	xmlns:my="urn:import:xrm.test.bv.client.ui">
+	<g:HTMLPanel>
+
+		<div class='navbar navbar-fixed-top'>
+			<div class="navbar-inner">
+				<div class="container">
+					<a class="brand" href="#">Историй изменений</a>
+					<button type="button" class="btn btn-navbar collapsed"
+						data-toggle="collapse" data-target=".nav-collapse">
+						<span class="icon-bar"></span>
+					</button>
+
+				</div>
+			</div>
+		</div>
+		<div style='height: 0; margin-top: 60px;' />
+		<hr />
+		<div class='container'>
+			<div class='row'>
+				<div class='span4'>
+					<h4>Фильтр</h4>
+					<table class='table table-striped'>
+						<tr>
+							<td>Автор</td>
+							<td>
+								<g:ListBox ui:field="authorFilter" visibleItemCount="5"
+									multipleSelect="true" />
+							</td>
+						</tr>
+						<tr>
+							<td>Дата</td>
+							<td>
+								<span>С</span>
+								<my:DateWidget/>
+								<span>по</span>
+								<my:DateWidget/>
+							</td>
+						</tr>
+					</table>
+				</div>
+				<div class='span8'>
+					<g:SimplePanel ui:field="versions" />
+				</div>
+			</div>
+
+		</div>
+	</g:HTMLPanel>
+</ui:UiBinder> 

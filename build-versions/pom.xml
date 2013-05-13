@@ -4,11 +4,18 @@
 	<groupId>xrm.test</groupId>
 	<artifactId>build-versions</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
+	<packaging>war</packaging>
 	<properties>
 		<webappDirectory>${project.build.directory}/${project.build.finalName}</webappDirectory>
 	</properties>
 
 	<dependencies>
+		<!-- Version annotation -->
+		<dependency>
+			<groupId>xrm.test</groupId>
+			<artifactId>version-annotation</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
 		<!-- GWT dependencies -->
 		<dependency>
 			<groupId>com.google.gwt</groupId>
@@ -28,27 +35,9 @@
 		</dependency>
 
 		<dependency>
-			<groupId>com.github.goonjja</groupId>
-			<artifactId>gweetie</artifactId>
-			<version>1.0-SNAPSHOT</version>
-		</dependency>
-
-		<dependency>
 			<groupId>javax.validation</groupId>
 			<artifactId>validation-api</artifactId>
 			<version>1.1.0.Final</version>
-		</dependency>
-
-		<!-- Mvp4g -->
-		<dependency>
-			<groupId>com.googlecode.mvp4g</groupId>
-			<artifactId>mvp4g</artifactId>
-			<version>1.4.0</version>
-		</dependency>
-		<dependency>
-			<groupId>com.google.gwt.inject</groupId>
-			<artifactId>gin</artifactId>
-			<version>2.0.0</version>
 		</dependency>
 
 		<!-- hibernate -->
@@ -57,22 +46,32 @@
 			<artifactId>hibernate-core</artifactId>
 			<version>4.1.4.Final</version>
 		</dependency>
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-validator</artifactId>
-			<version>5.0.1.Final</version>
-		</dependency>
-		<dependency>
-			<groupId>javax.transaction</groupId>
-			<artifactId>jta</artifactId>
-			<version>1.1</version>
-		</dependency>
-
-		<!-- SQLite JDBC library -->
+		<!-- SQLite -->
 		<dependency>
 			<groupId>org.xerial</groupId>
 			<artifactId>sqlite-jdbc</artifactId>
 			<version>3.7.2</version>
+		</dependency>
+		<!-- Spring -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+			<version>3.2.2.RELEASE</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-orm</artifactId>
+			<version>3.2.2.RELEASE</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-core</artifactId>
+			<version>3.2.2.RELEASE</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-web</artifactId>
+			<version>3.2.2.RELEASE</version>
 		</dependency>
 
 		<!-- Logging -->
@@ -120,6 +119,7 @@
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>gwt-maven-plugin</artifactId>
+				<version>2.5.1</version>
 				<executions>
 					<execution>
 						<configuration>
@@ -157,6 +157,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-resources-plugin</artifactId>
+				<version>2.6</version>
 			</plugin>
 		</plugins>
 		<pluginManagement>
@@ -199,12 +200,9 @@
 
 	<repositories>
 		<repository>
-			<id>gweetie-mvn-repo</id>
-			<url>https://raw.github.com/goonjja/gweetie/mvn-repo/</url>
-			<snapshots>
-				<enabled>true</enabled>
-				<updatePolicy>always</updatePolicy>
-			</snapshots>
+			<id>springsource-repo</id>
+			<name>SpringSource Repository</name>
+			<url>http://repo.springsource.org/release</url>
 		</repository>
 	</repositories>
 </project>
