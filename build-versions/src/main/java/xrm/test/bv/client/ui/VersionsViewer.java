@@ -1,17 +1,27 @@
 package xrm.test.bv.client.ui;
 
+import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
+import xrm.test.bv.client.FilterChangedEvent;
+import xrm.test.bv.client.FilterChangedEventHandler;
 import xrm.test.bv.client.VersionsPresenter;
 import xrm.test.versions.entity.ClassVersion;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.shared.HandlerManager;
+import com.google.gwt.event.shared.HandlerRegistration;
+import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.ColumnSortEvent.ListHandler;
 import com.google.gwt.user.cellview.client.TextColumn;
+import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.SimplePanel;
@@ -21,11 +31,13 @@ import com.google.gwt.view.client.ListDataProvider;
 public class VersionsViewer extends Composite implements VersionsPresenter.View {
 
 	private static VersionsViewerUiBinder uiBinder = GWT.create(VersionsViewerUiBinder.class);
+	private HandlerManager handlerManager;
 
 	interface VersionsViewerUiBinder extends UiBinder<Widget, VersionsViewer> {
 	}
 
 	public VersionsViewer() {
+		handlerManager = new HandlerManager(this);
 		initWidget(uiBinder.createAndBindUi(this));
 		initTable();
 	}
@@ -34,13 +46,17 @@ public class VersionsViewer extends Composite implements VersionsPresenter.View 
 	SimplePanel versions;
 	@UiField
 	ListBox authorFilter;
+	@UiField
+	DateWidget fromDate;
+	@UiField
+	DateWidget toDate;
+	@UiField
+	Anchor search;
 
 	ListDataProvider<ClassVersion> dataProvider = new ListDataProvider<ClassVersion>();
-
+	CellTable<ClassVersion> table = new CellTable<ClassVersion>();
+	
 	private void initTable() {
-		// Create a CellTable.
-		CellTable<ClassVersion> table = new CellTable<ClassVersion>();
-
 		TextColumn<ClassVersion> authorColumn = new TextColumn<ClassVersion>() {
 			@Override
 			public String getValue(ClassVersion version) {
@@ -58,7 +74,7 @@ public class VersionsViewer extends Composite implements VersionsPresenter.View 
 		TextColumn<ClassVersion> dateColumn = new TextColumn<ClassVersion>() {
 			@Override
 			public String getValue(ClassVersion version) {
-				return version.getDate().toString().substring(0, 10);
+				return DateTimeFormat.getFormat("dd.MM.yyyy").format(version.getDate());
 			}
 		};
 		dateColumn.setSortable(true);
@@ -88,7 +104,7 @@ public class VersionsViewer extends Composite implements VersionsPresenter.View 
 			}
 		});
 		table.addColumnSortHandler(authorSortHandler);
-		
+
 		ListHandler<ClassVersion> classSortHandler = new ListHandler<ClassVersion>(dataProvider.getList());
 		classSortHandler.setComparator(classNameColumn, new Comparator<ClassVersion>() {
 			public int compare(ClassVersion o1, ClassVersion o2) {
@@ -102,7 +118,7 @@ public class VersionsViewer extends Composite implements VersionsPresenter.View 
 			}
 		});
 		table.addColumnSortHandler(classSortHandler);
-		
+
 		ListHandler<ClassVersion> dateSortHandler = new ListHandler<ClassVersion>(dataProvider.getList());
 		dateSortHandler.setComparator(dateColumn, new Comparator<ClassVersion>() {
 			public int compare(ClassVersion o1, ClassVersion o2) {
@@ -133,9 +149,27 @@ public class VersionsViewer extends Composite implements VersionsPresenter.View 
 	@Override
 	public void setAuthors(List<String> result) {
 		authorFilter.clear();
-		for(String s: result){
+		for (String s : result) {
 			authorFilter.addItem(s);
 		}
+	}
+
+	@UiHandler("search")
+	public void onSearch(ClickEvent clickEvent) {
+		List<String> authors = new ArrayList<String>();
+		for (int i = 0; i < authorFilter.getItemCount(); i++) {
+			if (authorFilter.isItemSelected(i))
+				authors.add(authorFilter.getItemText(i));
+		}
+		Date from = fromDate.getDate();
+		Date to = toDate.getDate();
+		FilterChangedEvent event = new FilterChangedEvent(authors, from, to);
+		handlerManager.fireEvent(event);
+	}
+
+	@Override
+	public HandlerRegistration addFilterChangedEventHandler(FilterChangedEventHandler handler) {
+		return handlerManager.addHandler(FilterChangedEvent.TYPE, handler);
 	}
 
 }

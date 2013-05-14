@@ -10,7 +10,9 @@ import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
+import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
@@ -23,9 +25,14 @@ public class DateWidget extends Composite {
 	interface DateWidgetUiBinder extends UiBinder<Widget, DateWidget> {
 	}
 
-	PopupPanel popupPanel = new PopupPanel(true);
+	private PopupPanel popupPanel = new PopupPanel(true);
+	private Date date = null;
 	@UiField
 	TextBox textbox;
+	@UiField
+	Anchor clear;
+	@UiField
+	Label label;
 
 	public DateWidget() {
 		initWidget(uiBinder.createAndBindUi(this));
@@ -35,7 +42,8 @@ public class DateWidget extends Composite {
 
 			public void onValueChange(ValueChangeEvent<Date> event) {
 				Date date = event.getValue();
-				textbox.setText(DateTimeFormat.getFormat("yyyy-MM-dd").format(date));
+				textbox.setText(DateTimeFormat.getFormat("dd.MM.yyyy").format(date));
+				DateWidget.this.date = date;
 				popupPanel.hide();
 			}
 		});
@@ -50,4 +58,23 @@ public class DateWidget extends Composite {
 		popupPanel.setPopupPosition(x, y + 20);
 		popupPanel.show();
 	}
+
+	@UiHandler("clear")
+	public void onClear(ClickEvent event) {
+		textbox.setValue("");
+		date = null;
+	}
+
+	public Date getDate() {
+		return date;
+	}
+
+	public String getLabel() {
+		return label.getText();
+	}
+
+	public void setLabel(String label) {
+		this.label.setText(label);
+	}
+
 }

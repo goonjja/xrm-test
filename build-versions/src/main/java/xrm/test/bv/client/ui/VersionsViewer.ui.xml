@@ -1,7 +1,6 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-	xmlns:g="urn:import:com.google.gwt.user.client.ui"
-	xmlns:dp="urn:import:com.google.gwt.user.datepicker.client"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:dp="urn:import:com.google.gwt.user.datepicker.client"
 	xmlns:my="urn:import:xrm.test.bv.client.ui">
 	<g:HTMLPanel>
 
@@ -34,10 +33,13 @@
 						<tr>
 							<td>Дата</td>
 							<td>
-								<span>С</span>
-								<my:DateWidget/>
-								<span>по</span>
-								<my:DateWidget/>
+								<my:DateWidget ui:field='fromDate' label='С' />
+								<my:DateWidget ui:field='toDate' label='по' />
+							</td>
+						</tr>
+						<tr>
+							<td colspan='2'>
+								<g:Anchor ui:field='search' styleName='btn btn-info pull-right'>Показать</g:Anchor>
 							</td>
 						</tr>
 					</table>

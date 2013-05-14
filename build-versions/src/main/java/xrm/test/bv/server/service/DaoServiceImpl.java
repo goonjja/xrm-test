@@ -1,5 +1,6 @@
 package xrm.test.bv.server.service;
 
+import java.util.Date;
 import java.util.List;
 
 import xrm.test.bv.client.service.DaoService;
@@ -15,13 +16,13 @@ public class DaoServiceImpl extends RemoteServiceServlet implements DaoService {
 			ClassVersionDAO.class);
 
 	@Override
-	public List<ClassVersion> getVersions() {
-		return dao.findAll();
+	public List<String> getAuthors() {
+		return dao.getAuthors();
 	}
 
 	@Override
-	public List<String> getAuthors() {
-		return dao.getAuthors();
+	public List<ClassVersion> getVersions(List<String> authors, Date from, Date to) {
+		return dao.find(authors, from, to);
 	}
 
 }

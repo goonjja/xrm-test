@@ -5,8 +5,21 @@
 		.textbox {
 			cursor: pointer !important;
 		}
+		
+		.btn {
+			margin-bottom: 10px;
+		}
+		
+		.label {
+			float: left;
+			margin-right: 10px;
+			min-width: 40px;
+		}
 	</ui:style>
 	<g:HTMLPanel>
-		<g:TextBox ui:field="textbox" readOnly="true" styleName="{style.textbox}" />
+		<g:Label ui:field='label' styleName='{style.label}' />
+		<g:TextBox ui:field="textbox" readOnly="true" styleName="{style.textbox}"
+			width="80px" />
+		<g:Anchor ui:field='clear' styleName='btn {style.btn}' text="&times;" />
 	</g:HTMLPanel>
 </ui:UiBinder> 
